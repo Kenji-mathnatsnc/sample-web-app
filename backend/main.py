@@ -1,10 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi import FastAPI
-from models import User
 from users_repository import UserRepository
+from user_service import UserService
+from models import *
 
 app: FastAPI = FastAPI()
 user_repo: UserRepository = UserRepository()
+user_service: UserService = UserService(user_repo)
 
 
 @app.get("/")
@@ -14,22 +16,21 @@ async def root():
 
 @app.get("/api/v2/users")
 async def get_users():
-    return user_repo.get_all_users()
+    return user_service.find_all()
 
 
 @app.get("/api/v2/users/{sequence_nbr}")
 async def get_user_by_seqnbr(sequence_nbr: int):
-    result = user_repo.get_user(sequence_nbr)
+    result = user_service.find(sequence_nbr)
     if result:
         return result
     raise HTTPException(
-        status_code=404, detail=f"sequence_nbr : {sequence_nbr} not found."
-    )
+        status_code=404, detail=f"sequence_nbr : {sequence_nbr} not found.")
 
 
 @app.post("/api/v2/users")
 async def create_user(user: User):
-    result = user_repo.create_user(user)
+    result = user_service.register(user)
     if result:
         return "Success!!"
     raise HTTPException(
@@ -39,7 +40,8 @@ async def create_user(user: User):
 
 @app.put("/api/v2/users/{sequence_nbr}")
 async def update_user(sequence_nbr: int, first_name: str, last_name: str):
-    result = user_repo.update_user(sequence_nbr, first_name, last_name)
+    command = UpdateUserCommand(sequence_nbr, first_name, last_name)
+    result = user_service.update(command)
     if result:
         return "Success!!"
     raise HTTPException(
@@ -48,7 +50,7 @@ async def update_user(sequence_nbr: int, first_name: str, last_name: str):
 
 @app.delete("/api/v2/users/{sequence_nbr}")
 async def delete_user(sequence_nbr: int):
-    result = user_repo.delete_user(sequence_nbr)
+    result = user_service.remove(sequence_nbr)
     if result:
         return "Success!!"
     raise HTTPException(
@@ -58,7 +60,7 @@ async def delete_user(sequence_nbr: int):
 
 @app.delete("/api/v2/users/")
 async def delete_all():
-    result = user_repo.delete_all()
+    result = user_service.remove_all()
     if result:
         return "Success!!"
     raise HTTPException(
