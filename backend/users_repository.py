@@ -1,6 +1,5 @@
 from typing import List
 from pymongo import MongoClient
-from abstract_repository import IRepository
 from models import Gender, User, Role
 
 
