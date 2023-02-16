@@ -20,3 +20,14 @@ class User(BaseModel):
     last_name: str
     gender: Gender
     roles: List[Role]
+
+
+class UpdateUserCommand():
+    sequence_nbr: int
+    first_name: str
+    last_name: str
+
+    def __init__(self, sequence_nbr: int, first_name: str, last_name: str) -> None:
+        self.sequence_nbr = sequence_nbr
+        self.first_name = first_name
+        self.last_name = last_name

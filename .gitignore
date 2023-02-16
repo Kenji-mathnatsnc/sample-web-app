@@ -1,6 +1,6 @@
 /frontend/data/
 
-/backend/__pycache__
+/backend/__pycache__/
 
 # System files
 .DS_Store
