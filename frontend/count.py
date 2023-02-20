@@ -1,12 +1,7 @@
-import streamlit as st
+import json
 
-st.title("Counter Example")
-if "count" not in st.session_state:  # (C)
-    st.session_state.count = 0  # (A)
+payload: str = '{"sequence_nbr": "111","first_name":"aaaa","last_name": "bbbb","gender": "male", "roles": "admin"}'
 
-increment = st.button("Increment")  # (B)
-print(st.session_state)
-if increment:
-    st.session_state.count += 1  # (A)
+data: dict = json.loads(payload)
 
-st.write("Count = ", st.session_state.count)  # (A)
+print(data["sequence_nbr"])

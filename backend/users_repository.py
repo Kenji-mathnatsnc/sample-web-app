@@ -1,13 +1,15 @@
 from typing import List
 from pymongo import MongoClient
-from models import Gender, User, Role
+from models import *
+
+# DB_URL = 'mongodb+srv://test:test@cluster0.zvseqwf.mongodb.net/?retryWrites=true&w=majority'
+DB_URL = 'mongodb://127.0.0.1:27017'
 
 
 class UserRepository():
 
     def __init__(self) -> None:
-        self.client: MongoClient = MongoClient(
-            'mongodb+srv://test:test@cluster0.zvseqwf.mongodb.net/?retryWrites=true&w=majority')
+        self.client: MongoClient = MongoClient(DB_URL)
         self.db = self.client.users
         self.collection = self.db.users
         if len(self.get_all_users()) == 0:
@@ -17,31 +19,31 @@ class UserRepository():
         user_data: List[User] = [
             User(
                 sequence_nbr=1,
-                first_name="aaaaa",
-                last_name="bbbbb",
+                first_name="坂上",
+                last_name="田村麻呂",
                 gender=Gender.male,
-                roles=[Role.user],
+                roles=Role.user,
             ).dict(),
             User(
                 sequence_nbr=2,
-                first_name="ccccc",
-                last_name="ddddd",
+                first_name="空条",
+                last_name="徐倫",
                 gender=Gender.female,
-                roles=[Role.user],
+                roles=Role.user,
             ).dict(),
             User(
                 sequence_nbr=3,
-                first_name="HollyWood",
-                last_name="Zakoshisho",
+                first_name="ハリウッド",
+                last_name="ザコシショウ",
                 gender=Gender.male,
-                roles=[Role.user],
+                roles=Role.user,
             ).dict(),
             User(
                 sequence_nbr=4,
                 first_name="世紀末覇者",
                 last_name="ラオウ",
                 gender=Gender.male,
-                roles=[Role.admin, Role.user],
+                roles=Role.admin,
             ).dict(),
         ]
         print('初期データinsert')
@@ -67,9 +69,10 @@ class UserRepository():
         insertManyResult = self.collection.insert_many(user_list)
         return insertManyResult.acknowledged
 
-    def update_user(self, sequence_nbr: int, first_name: str, last_name: str):
-        updateResult = self.collection.update_one({"sequence_nbr": sequence_nbr},
-                                                  {"$set": {"first_name": first_name, "last_name": last_name}})
+    def update_user(self, command: UpdateUserCommand):
+        updateResult = self.collection.update_one({"sequence_nbr": command.sequence_nbr},
+                                                  {"$set": {"first_name": command.first_name,
+                                                            "last_name": command.last_name}})
         return updateResult.acknowledged
 
     def delete_user(self, sequence_nbr: int):

@@ -20,8 +20,7 @@ class UserService():
         return result
 
     def update(self, command: UpdateUserCommand):
-        result = self.user_repo.update_user(
-            command.sequence_nbr, command.first_name, command.last_name)
+        result = self.user_repo.update_user(command)
         return result
 
     def remove(self, sequence_nbr: int):
