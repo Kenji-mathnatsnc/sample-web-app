@@ -20,12 +20,12 @@ async def root():
 
 
 @app.get("/api/v2/users/")
-async def get_users():
+async def get_users() -> list:
     return user_service.find_all()
 
 
 @app.get("/api/v2/users/{sequence_nbr}")
-async def get_user_by_seqnbr(sequence_nbr: int):
+async def get_user_by_seqnbr(sequence_nbr: int) -> User:
     result = user_service.find(sequence_nbr)
     if result:
         return result
@@ -34,7 +34,7 @@ async def get_user_by_seqnbr(sequence_nbr: int):
 
 
 @app.post("/api/v2/users/")
-async def create_user(payload: str = Body()):
+async def create_user(payload: str = Body()) -> str:
     data = json.loads(payload)
     user = User(sequence_nbr=data["sequence_nbr"], first_name=data["first_name"],
                 last_name=data["last_name"], gender=data["gender"], roles=data["roles"])
@@ -46,7 +46,7 @@ async def create_user(payload: str = Body()):
 
 
 @app.put("/api/v2/users/{sequence_nbr}")
-async def update_user(payload: str = Body()):
+async def update_user(payload: str = Body()) -> str:
     data = json.loads(payload)
     command = UpdateUserCommand(sequence_nbr=int(data["sequence_nbr"]),
                                 first_name=data["first_name"],
@@ -59,7 +59,7 @@ async def update_user(payload: str = Body()):
 
 
 @app.delete("/api/v2/users/{sequence_nbr}")
-async def delete_user(sequence_nbr: int):
+async def delete_user(sequence_nbr: int) -> str:
     result = user_service.remove(sequence_nbr)
     if result:
         return "Success!!"
@@ -69,7 +69,7 @@ async def delete_user(sequence_nbr: int):
 
 
 @app.delete("/api/v2/users/")
-async def delete_all():
+async def delete_all() -> str:
     result = user_service.remove_all()
     if result:
         return "Success!!"

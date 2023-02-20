@@ -9,18 +9,19 @@ url = 'http://localhost:8000/api/v2/users/'
 st.title("Streamlit サンプル")
 
 page = st.sidebar.selectbox(
-    'メニューを選択せよ', ['home', 'register', 'inquire', 'inquireAll', 'update'])
+    'メニューを選択せよ', ['home', 'register', 'inquire', 'inquireAll', 'update', 'deleteAll'])
 
 if page == 'home':
     st.title("ホーム")
 
 if page == 'inquireAll':
     st.title("全ユーザ照会")
-    submit_bottun = st.button(label='照会')
-    if submit_bottun:
-        res = requests.get(url)
-        decorded_text = res.content.decode('utf-8')
-        st.markdown(decorded_text)
+    with st.form(key='inquireAll'):
+        submit_bottun = st.form_submit_button(label='照会')
+        if submit_bottun:
+            res = requests.get(url)
+            decorded_text = res.content.decode('utf-8')
+            st.markdown(decorded_text)
 
 elif page == 'inquire':
     st.title("ユーザ照会")
@@ -77,4 +78,14 @@ elif page == 'update':
             res = requests.put(url=url+seq_nbr, json=json.dumps(payload))
             if res.status_code == 200:
                 st.success('更新完了')
+            st.markdown(res.text)
+
+elif page == 'deleteAll':
+    st.title("全ユーザ削除")
+    with st.form(key='deleteAll'):
+        submit_bottun: bool = st.form_submit_button(label='削除')
+        if submit_bottun:
+            res = requests.delete(url)
+            if res.status_code == 200:
+                st.success('削除完了')
             st.markdown(res.text)
