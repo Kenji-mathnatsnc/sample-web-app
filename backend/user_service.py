@@ -8,25 +8,25 @@ class UserService():
     def __init__(self, user_repo: UserRepository) -> None:
         self.user_repo = user_repo
 
-    def find(self, sequence_nbr: int):
+    def find(self, sequence_nbr: int) -> (User | None):
         result = self.user_repo.get_user(sequence_nbr)
         return result
 
-    def find_all(self):
+    def find_all(self) -> list:
         return self.user_repo.get_all_users()
 
-    def register(self, user: User):
+    def register(self, user: User) -> bool:
         result = self.user_repo.create_user(user)
         return result
 
-    def update(self, command: UpdateUserCommand):
+    def update(self, command: UpdateUserCommand) -> bool:
         result = self.user_repo.update_user(command)
         return result
 
-    def remove(self, sequence_nbr: int):
+    def remove(self, sequence_nbr: int) -> bool:
         result = self.user_repo.delete_user(sequence_nbr)
         return result
 
-    def remove_all(self):
+    def remove_all(self) -> bool:
         result = self.user_repo.delete_all()
         return result
