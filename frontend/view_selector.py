@@ -21,5 +21,5 @@ class ViewSelector():
         clazz = getattr(module, clazz_name)
         return clazz()
 
-    def perform(self) -> None:
+    def perform_selected_logic(self) -> None:
         self.strategy.show_screen()
