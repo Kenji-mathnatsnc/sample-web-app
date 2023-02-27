@@ -9,6 +9,10 @@ app: FastAPI = FastAPI()
 user_repo: UserRepository = UserRepository()
 user_service: UserService = UserService(user_repo)
 
+# 実行コマンド
+# uvicorn main:app --reload
+# python main.py
+
 
 if __name__ == "__main__":
     # uvicorn.run(app, host="localhost", port=8000)
