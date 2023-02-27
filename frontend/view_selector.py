@@ -21,5 +21,5 @@ class ViewSelector():
         clazz = getattr(module, clazz_name)
         return clazz()
 
-    def perform(self, url) -> None:
-        self.strategy.show_screen(url)
+    def perform(self) -> None:
+        self.strategy.show_screen()
