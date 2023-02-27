@@ -5,46 +5,47 @@ import streamlit as st
 
 
 class IView(metaclass=ABCMeta):
+    url: str = 'http://localhost:8000/api/v2/users/'
 
     @abstractmethod
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         pass
 
 
 class ViewHome(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title("ホーム")
 
 
 class ViewAllUsers(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title("全ユーザ照会")
         with st.form(key='inquireAll'):
             submit_bottun = st.form_submit_button(label='照会')
             if submit_bottun:
-                res = requests.get(url)
+                res = requests.get(self.url)
                 decorded_text = res.content.decode('utf-8')
                 st.markdown(decorded_text)
 
 
 class ViewUser(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title("ユーザ照会")
         with st.form(key='inquire'):
             seq_nbr: str = st.text_input('シーケンス番号')
             submit_bottun = st.form_submit_button(label='照会')
             if submit_bottun:
-                res = requests.get(url+seq_nbr)
+                res = requests.get(self.url+seq_nbr)
                 decorded_text = res.content.decode('utf-8')
                 st.markdown(decorded_text)
 
 
 class ViewRegister(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title("ユーザ登録")
         with st.form(key='register'):
             seq_nbr: str = st.text_input('シーケンス番号')
@@ -66,7 +67,7 @@ class ViewRegister(IView):
             }
             submit_bottun: bool = st.form_submit_button(label='登録')
             if submit_bottun:
-                res = requests.post(url=url, json=json.dumps(payload))
+                res = requests.post(url=self.url, json=json.dumps(payload))
                 if res.status_code == 200:
                     st.success('登録完了')
                 st.markdown(res.text)
@@ -74,7 +75,7 @@ class ViewRegister(IView):
 
 class ViewUpdate(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title('ユーザ情報更新')
         with st.form(key='update'):
             seq_nbr: str = st.text_input('シーケンス番号')
@@ -88,7 +89,8 @@ class ViewUpdate(IView):
             }
             submit_bottun: bool = st.form_submit_button(label='更新')
             if submit_bottun:
-                res = requests.put(url=url+seq_nbr, json=json.dumps(payload))
+                res = requests.put(url=self.url+seq_nbr,
+                                   json=json.dumps(payload))
                 if res.status_code == 200:
                     st.success('更新完了')
                 st.markdown(res.text)
@@ -96,12 +98,12 @@ class ViewUpdate(IView):
 
 class ViewDeleteAll(IView):
 
-    def show_screen(self, url):
+    def show_screen(self) -> None:
         st.title("全ユーザ削除")
         with st.form(key='deleteAll'):
             submit_bottun: bool = st.form_submit_button(label='削除')
             if submit_bottun:
-                res = requests.delete(url)
+                res = requests.delete(self.url)
                 if res.status_code == 200:
                     st.success('削除完了')
                 st.markdown(res.text)
