@@ -3,23 +3,23 @@ from view_states import *
 
 class ViewSelector():
 
-    def __init__(self, page) -> None:
-        self.page = page
-        self.state: IView = self.get_instance(page)
+    class_name_set = {
+        'home': 'ViewHome',
+        'register': 'ViewRegister',
+        'inquire': 'ViewUser',
+        'inquireAll': 'ViewAllUsers',
+        'update': 'ViewUpdate',
+        'deleteAll': 'ViewDeleteAll'
+    }
 
-    def get_instance(self, page) -> IView:
-        if page == 'home':
-            return ViewHome.get_instance()
-        if page == 'register':
-            return ViewRegister.get_instance()
-        if page == 'inquire':
-            return ViewUser.get_instance()
-        if page == 'inquireAll':
-            return ViewAllUsers.get_instance()
-        if page == 'update':
-            return ViewUpdate.get_instance()
-        if page == 'deleteAll':
-            return ViewDeleteAll.get_instance()
+    def __init__(self, page) -> None:
+        self.strategy: IView = self.__get_instance(page)
+
+    def __get_instance(self, page) -> IView:
+        clazz_name = ViewSelector.class_name_set[page]
+        module = __import__('view_states', clazz_name)
+        clazz = getattr(module, clazz_name)
+        return clazz()
 
     def perform(self, url) -> None:
-        self.state.show_screen(url)
+        self.strategy.show_screen(url)

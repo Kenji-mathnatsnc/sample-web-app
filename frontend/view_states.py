@@ -10,36 +10,14 @@ class IView(metaclass=ABCMeta):
     def show_screen(self, url):
         pass
 
-    @abstractmethod
-    def get_instance():
-        pass
-
 
 class ViewHome(IView):
-
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewHome, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewHome().__instance__
 
     def show_screen(self, url):
         st.title("ホーム")
 
 
 class ViewAllUsers(IView):
-
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewAllUsers, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewAllUsers().__instance__
 
     def show_screen(self, url):
         st.title("全ユーザ照会")
@@ -53,15 +31,6 @@ class ViewAllUsers(IView):
 
 class ViewUser(IView):
 
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewUser, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewUser().__instance__
-
     def show_screen(self, url):
         st.title("ユーザ照会")
         with st.form(key='inquire'):
@@ -74,15 +43,6 @@ class ViewUser(IView):
 
 
 class ViewRegister(IView):
-
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewRegister, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewRegister().__instance__
 
     def show_screen(self, url):
         st.title("ユーザ登録")
@@ -114,15 +74,6 @@ class ViewRegister(IView):
 
 class ViewUpdate(IView):
 
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewUpdate, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewUpdate().__instance__
-
     def show_screen(self, url):
         st.title('ユーザ情報更新')
         with st.form(key='update'):
@@ -144,15 +95,6 @@ class ViewUpdate(IView):
 
 
 class ViewDeleteAll(IView):
-
-    def __new__(cls, *args, **kargs):
-        if not hasattr(cls, "__instance__"):
-            cls.__instance__ = \
-                super(ViewDeleteAll, cls).__new__(cls, *args, **kargs)
-        return cls.__instance__
-
-    def get_instance():
-        return ViewDeleteAll().__instance__
 
     def show_screen(self, url):
         st.title("全ユーザ削除")
