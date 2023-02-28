@@ -5,7 +5,7 @@ import streamlit as st
 
 
 class IView(metaclass=ABCMeta):
-    url: str = 'http://localhost:8000/api/v2/users/'
+    _url: str = 'http://localhost:8000/api/v2/users/'
 
     @abstractmethod
     def show_screen(self) -> None:
@@ -25,7 +25,7 @@ class ViewAllUsers(IView):
         with st.form(key='inquireAll'):
             submit_bottun = st.form_submit_button(label='照会')
             if submit_bottun:
-                res = requests.get(self.url)
+                res = requests.get(self._url)
                 decorded_text = res.content.decode('utf-8')
                 st.markdown(decorded_text)
 
@@ -38,7 +38,7 @@ class ViewUser(IView):
             seq_nbr: str = st.text_input('シーケンス番号')
             submit_bottun = st.form_submit_button(label='照会')
             if submit_bottun:
-                res = requests.get(self.url+seq_nbr)
+                res = requests.get(self._url+seq_nbr)
                 decorded_text = res.content.decode('utf-8')
                 st.markdown(decorded_text)
 
@@ -67,7 +67,7 @@ class ViewRegister(IView):
             }
             submit_bottun: bool = st.form_submit_button(label='登録')
             if submit_bottun:
-                res = requests.post(url=self.url, json=json.dumps(payload))
+                res = requests.post(url=self._url, json=json.dumps(payload))
                 if res.status_code == 200:
                     st.success('登録完了')
                 st.markdown(res.text)
@@ -89,7 +89,7 @@ class ViewUpdate(IView):
             }
             submit_bottun: bool = st.form_submit_button(label='更新')
             if submit_bottun:
-                res = requests.put(url=self.url+seq_nbr,
+                res = requests.put(url=self._url+seq_nbr,
                                    json=json.dumps(payload))
                 if res.status_code == 200:
                     st.success('更新完了')
@@ -103,7 +103,7 @@ class ViewDeleteAll(IView):
         with st.form(key='deleteAll'):
             submit_bottun: bool = st.form_submit_button(label='削除')
             if submit_bottun:
-                res = requests.delete(self.url)
+                res = requests.delete(self._url)
                 if res.status_code == 200:
                     st.success('削除完了')
                 st.markdown(res.text)
