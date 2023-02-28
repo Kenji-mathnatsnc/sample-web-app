@@ -3,13 +3,14 @@ from view_states import *
 
 class ViewSelector():
 
-    class_name_set: dict
+    class_name_set: dict = {}
     csv_path: str = "./config/menu.csv"
 
     def __new__(cls, page):
-        with open(cls.csv_path, mode="r", encoding="UTF-8") as f:
-            s = f.read()
-        cls.class_name_set = json.loads(s)
+        if not any(cls.class_name_set):
+            with open(cls.csv_path, mode="r", encoding="UTF-8") as f:
+                s = f.read()
+            cls.class_name_set = json.loads(s)
         return super().__new__(cls)
 
     def __init__(self, page) -> None:
