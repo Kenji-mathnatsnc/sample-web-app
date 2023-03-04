@@ -19,7 +19,6 @@ class User(BaseModel):
     first_name: str
     last_name: str
     gender: Gender
-    # roles: List[Role]
     roles: Role
 
 
