@@ -68,8 +68,7 @@ async def delete_user(sequence_nbr: int) -> str:
     if result:
         return "Success!!"
     raise HTTPException(
-        status_code=404, detail=f"Delete user failed, sequence_nbr = {sequence_nbr} not found."
-    )
+        status_code=404, detail=f"Delete user failed, sequence_nbr = {sequence_nbr} not found.")
 
 
 @app.delete("/api/v2/users/")
@@ -78,5 +77,4 @@ async def delete_all() -> str:
     if result:
         return "Success!!"
     raise HTTPException(
-        status_code=404, detail=f"Delete user_list failed"
-    )
+        status_code=404, detail=f"Delete user_list failed")

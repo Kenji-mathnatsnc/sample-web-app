@@ -1,9 +1,10 @@
 import json
 import streamlit as st
-
+from constants import *
 from view_selector import ViewSelector
 
-with open("./config/menu.csv", mode="r", encoding="UTF-8") as f:
+
+with open(Constants.prop_path, mode="r", encoding="UTF-8") as f:
     s = f.read()
 
 menu_list = list(json.loads(s).keys())

@@ -8,7 +8,7 @@ class UserRepository():
     DB_URL = 'mongodb://localhost:27017'
 
     def __init__(self) -> None:
-        self.client: MongoClient = MongoClient(self.DB_URL)
+        self.client: MongoClient = MongoClient(__class__.DB_URL)
         self.db = self.client.users
         self.collection = self.db.users
 
