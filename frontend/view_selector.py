@@ -1,17 +1,17 @@
+import json
 from constants import Constants
-from view_states import *
+from view_strategy import IView
 
 
 class ViewSelector():
 
-    __module_name = 'view_states'
+    __module_name = 'view_strategy'
     __class_name_set: dict = {}
 
     def __init__(self, page) -> None:
         if not any(__class__.__class_name_set):
             with open(Constants.prop_path, mode="r", encoding="UTF-8") as f:
                 s = f.read()
-                print('readfile')
             __class__.__class_name_set = json.loads(s)
 
         self.strategy: IView = self.__get_instance(page)

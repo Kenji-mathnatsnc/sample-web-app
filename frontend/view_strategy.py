@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 import json
 import requests
 import streamlit as st
+import pandas as pd
 
 
 class IView(metaclass=ABCMeta):
@@ -27,7 +28,9 @@ class ViewAllUsers(IView):
             if submit_bottun:
                 res = requests.get(self._url)
                 decorded_text = res.content.decode('utf-8')
-                st.markdown(decorded_text)
+                list_data= json.loads(decorded_text)                
+                st.table(list_data)
+                
 
 
 class ViewUser(IView):
@@ -35,12 +38,15 @@ class ViewUser(IView):
     def show_screen(self) -> None:
         st.title("ユーザ照会")
         with st.form(key='inquire'):
-            seq_nbr: str = st.text_input('シーケンス番号')
+            seq_nbr: str = st.text_input('シーケンス番号',key='seq')
             submit_bottun = st.form_submit_button(label='照会')
             if submit_bottun:
                 res = requests.get(self._url+seq_nbr)
                 decorded_text = res.content.decode('utf-8')
-                st.markdown(decorded_text)
+                list_data= json.loads(decorded_text)
+                if not isinstance(list_data, list):
+                    list_data = [list_data]
+                st.table(list_data)
 
 
 class ViewRegister(IView):
