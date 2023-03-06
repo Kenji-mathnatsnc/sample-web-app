@@ -22,7 +22,7 @@ class User(BaseModel):
     roles: Role
 
 
-class UpdateUserCommand():
+class UpdateUserCommand:
     sequence_nbr: int
     first_name: str
     last_name: str

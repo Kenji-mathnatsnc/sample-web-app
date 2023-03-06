@@ -11,3 +11,4 @@ Thumbs.db
 .vscode/
 
 /frontend/streamlit_sample.py
+.vscode/settings.json
