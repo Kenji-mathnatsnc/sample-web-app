@@ -7,7 +7,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
 
     // ファイルの保存時にフォーマットを自動実行する場合
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
 },
 
 // 最大文字数などのオプション引数を指定する場合
