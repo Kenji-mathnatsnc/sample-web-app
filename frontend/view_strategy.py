@@ -3,6 +3,8 @@ import json
 import requests
 import streamlit as st
 import pandas as pd
+from states import *
+
 
 
 class IView(metaclass=ABCMeta):
@@ -102,3 +104,39 @@ class ViewDeleteAll(IView):
                 if res.status_code == 200:
                     st.success("削除完了")
                 st.markdown(res.text)
+
+@st.cache_resource
+class ViewCustom(IView):
+
+    __state: IState = None
+    __state_manage = StateManage()
+
+    disabled_msg = "未許可遷移のため、遷移できなかったでござるよ"
+
+    def show_screen(self) -> None:
+        if not self.__state:
+            self.__state = InitialState.get_instance()
+        
+        col0, col1, col2, col3 = st.columns(4)
+        if col0.button("初期"):
+            if self.__state_manage.is_transitionable(self.__state.get_classname(), States.InitialState):
+                self.__state = InitialState.get_instance()
+            else:
+                st.write(self.disabled_msg)
+        if col1.button("新規"):
+            if self.__state_manage.is_transitionable(self.__state.get_classname(), States.NewAddState):
+                self.__state = NewAddState.get_instance()
+            else:
+                st.write(self.disabled_msg)
+        if col2.button("取得"):
+            if self.__state_manage.is_transitionable(self.__state.get_classname(), States.GetDataState):
+                self.__state = GetDataState.get_instance()
+            else:
+                st.write(self.disabled_msg)
+        if col3.button("削除"):
+            if self.__state_manage.is_transitionable(self.__state.get_classname(), States.DeleteState):
+                self.__state = DeleteState.get_instance()
+            else:
+                st.write(self.disabled_msg)
+        
+        self.__state.show()
